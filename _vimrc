@@ -1,5 +1,5 @@
 scriptencoding utf-8
-"Last Change: 18-Apr-2014.
+"Last Change: 22-Sep-2014.
 "Maintainer:  kawakami yuta 
 "-------------------------------------------------------------------------------
 
@@ -21,11 +21,30 @@ NeoBundle 'Shougo/vimproc', {
       \    },
       \ }
 """}}}
-NeoBundle 'Shougo/neocomplete.vim'
-"NeoBundle 'Shougo/neo
+"NeoBundle 'Shougo/neocomplete.vim'
 NeoBundle 'kana/vim-surround'
+NeoBundle 'LeafCage/foldCC'
 NeoBundle 'vim-scripts/autodate.vim'
 NeoBundle 'tyru/eskk.vim'
+"NeoBundle 'Shougo/vimfiler'
+NeoBundle 'Shougo/neosnippet'
+NeoBundle 'Shougo/neosnippet-snippets'
+NeoBundle 'Shougo/unite.vim'
+NeoBundle 'Shougo/neomru.vim'
+"NeoBundle 'tsukkee/unite-tag'
+"NeoBundle 'Shougo/unite-outline'
+NeoBundle 'ujihisa/unite-colorscheme'
+NeoBundle 'thinca/vim-fontzoom'
+NeoBundle 'tpope/vim-fugitive'
+NeoBundle 'Shougo/neocomplcache'
+NeoBundle 'osyo-manga/vim-stargate'
+NeoBundle 'altercation/vim-colors-solarized'
+NeoBundle 'tomasr/molokai'
+NeoBundle 'ctrlpvim/ctrlp.vim'
+NeoBundle 'mattn/webapi-vim'
+NeoBundle 'mattn/excitetranslate-vim'
+NeoBundle 'ujihisa/neco-look'
+NeoBundle 'thinca/vim-ref'
 "NeoBundle 'fuenor/im_control.vim '
 filetype plugin indent on
 NeoBundleCheck
@@ -44,6 +63,8 @@ set tabstop=4
 "set expandtab """expand tab to space
 set ignorecase
 set smartcase
+set smartindent
+set omnifunc=syntaxcomplete
 set hlsearch
 set helplang=en,ja
 set textwidth=80
@@ -51,6 +72,8 @@ set formatoptions+=mM
 "set colorcolumn=+1
 set noswapfile
 set wildmenu
+"set t_Co=16
+set t_Co=256
 set nobackup
 "set list
 set listchars=tab:>-,trail:-,extends:>,precedes:<
@@ -60,11 +83,17 @@ set foldcolumn=3
 set clipboard=unnamed
 set guioptions-=m
 set guioptions-=T
+set shiftwidth=4
+"set tags=â€¾/ant/mvproc-test/tags
+set tags=./tags
+"set tags=â€¾/ant/execctl-test/src/tags
+"set tags=â€¾/ant/bulkipi-evaluate/tags
+"set tags=â€¾/ant/kawakami-ant/tags
 "set hidden
 syntax on
-if exists('FoldCCtext')
-        set foldtext=FoldCCtext() """change fold-function
-endif
+"if exists('FoldCCtext')
+set foldtext=FoldCCtext() """change fold-function
+"endif
 
 nnoremap <Space>.
         \       :<C-u>edit $MYVIMRC<CR>
@@ -72,8 +101,8 @@ nnoremap <Space>s.
         \       :<C-u>source $MYVIMRC<CR>
 """<Leader>=',' XXX may be have problem
 """ XXX why can't?
-"nnoremap \ ,
-"nnoremap , \
+"nnoremap Â¥ ,
+"nnoremap , Â¥
 nnoremap <Leader>c :<C-u>set cursorline!<CR>
 nnoremap <Leader>v :<C-u>set cursorcolumn!<CR>
 nnoremap <Leader>4 :<C-u>set tabstop=4<CR>
@@ -85,14 +114,30 @@ nnoremap <Leader>ccd :<C-u>set colorcolumn=+1<CR>
 nnoremap <Leader>f :<C-u>Explore<CR>
 nnoremap <Leader>s :<C-u>spell!<CR>
 nnoremap <Leader>h :<C-u>hidden!<CR>
+nnoremap <Leader>o :<C-u>Unite outline<CR>
+nnoremap <Leader>v :<C-u>vsplit<CR>
+nnoremap <Leader>f :<C-u>set foldmethod=indent<CR>
+nnoremap <Leader>m :<C-u>Unite file_mru<CR>
+map	 <C-]>	   :<C-u>GtagsCursor<CR>
+map	 <Leader>o :<C-u>Gtags -f %<CR>
+map	 <Leader>g :<C-u>Gtags<CR>
+map	 <Leader>r :<C-u>Gtags -r<CR>
+nmap	 <C-n> :<C-u>cn<CR>
+nmap	 <C-p> :<C-u>cp<CR>
+map  <C-c>	   :<C-u>qa!<CR>
+map  <Leader>w :<C-u>wq<CR>
+map  <Leader>q :<C-u>q!<CR>
 
-"¡ÖÆüËÜ¸ìÆşÎÏ¸ÇÄê¥â¡¼¥É¡×¤Îvi¶¨Ä´¥â¡¼¥É¤òÌµ¸ú²½
-let IM_vi_CooperativeMode = 0
-" ÁŞÆş¥â¡¼¥É½ªÎ»»ş¤ËIME¾õÂÖ¤òÊİÂ¸¤·¤Ê¤¤
-inoremap <silent> <ESC> <ESC>:call IMCtrl('Off')<CR>
-inoremap <silent> <C-[> <ESC>:call IMCtrl('Off')<CR>
+set path+=/home/kawakami/ant.git/sys/include
+set path+=/home/kawakami/ant.git/test/include
 
-" <ESC>²¡²¼¸å¤ÎIMÀÚÂØ³«»Ï¤Ş¤Ç¤ÎÈ¿±ş¤¬ÃÙ¤¤¾ì¹ç¤Ïttimeoutlen¤òÃ»¤¯ÀßÄê¤·¤Æ¤ß¤Æ¤¯¤À¤µ¤¤(¥ß¥êÉÃ)
+"?????ãƒ¯ã‚¯????ãƒã‚¯????ç­ã‚·?ãƒã€‚ãƒ©ã€?vi??ãƒˆã‚¨?ç­ã‚·?ãƒã€?ãƒ•ã‚ª????
+"let IM_vi_CooperativeMode = 0
+" ?????ç­ã‚·?ãƒã‚¹?ãƒ›ã‚µ????IME???ãƒ¨ã€???ãƒ„ã‚¯???ãƒã€?
+"inoremap <silent> <ESC> <ESC>:call IMCtrl('Off')<CR>
+"inoremap <silent> <C-[> <ESC>:call IMCtrl('Off')<CR>
+
+" <ESC>????????IM???ãƒªã‚¦??ãƒã€ã‚›ã€ãƒŒã€?ãƒã‚½?????ãƒ«ã€???????ttimeoutlen??ãƒ†ã‚µ?????ç†™ã‚­?ãƒ‹ã€ã‚œã€ãƒ‹ã€??ã‚¿ã€???(?ã‚œãƒ»???)
 set timeout timeoutlen=3000 ttimeoutlen=100
 
 
@@ -107,102 +152,172 @@ if has('multi byte ime') || has('xim') || has('gui_macvim')
 endif
 
 """plugins{{{
-"""neocomplete.vim{{{
-"Note: This option must set it in .vimrc(_vimrc).  NOT IN .gvimrc(_gvimrc)!
-"" Disable AutoComplPop.
+"""neocomplcache.vim{{{
+"Disable AutoComplPop.
 let g:acp_enableAtStartup = 0
-
-" Use neocomplete.
-let g:neocomplete#enable_at_startup = 1
-
+"Enable heaby omni completion
+"let g:neocomplcache_force_omni_patterns = 't:] *\t]\%(\.\|->\)'
+" Use neocomplcache.
+let g:neocomplcache_enable_at_startup = 1
+" Use smartcase.
+let g:neocomplcache_enable_smart_case = 1
 " Set minimum syntax keyword length.
-let g:neocomplete#sources#syntax#min_keyword_length = 3
-let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
+let g:neocomplcache_min_syntax_length = 3
+let g:neocomplcache_lock_buffer_name_pattern = '\*ku\*'
+
 " Define dictionary.
-let g:neocomplete#sources#dictionary#dictionaries = {
-     \ 'default' : '',
-     \ 'vimshell' : $HOME.'/.vimshell_hist',
-     \ 'scheme' : $HOME.'/.gosh_completions'
-	     \ }
-" Define keyword.
-if !exists('g:neocomplete#keyword_patterns')
-    let g:neocomplete#keyword_patterns = {}
-endif
-let g:neocomplete#keyword_patterns['default'] = '\h\w*'
+let g:neocomplcache_dictionary_filetype_lists = {
+			\ 'default' : ''
+			\ }
+"let g:neocomplcache_include_paths="/home/kawakami/src/sys/**,"
 
 " Plugin key-mappings.
-inoremap <expr><C-g>     neocomplete#undo_completion()
-inoremap <expr><C-l>     neocomplete#complete_common_string()
+inoremap <expr><C-g>     neocomplcache#undo_completion()
+inoremap <expr><C-l>     neocomplcache#complete_common_string()
 
 " Recommended key-mappings.
 " <CR>: close popup and save indent.
 inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
 function! s:my_cr_function()
-		return neocomplete#close_popup() . "\<CR>"
-		" For no inserting <CR> key.
-		"return pumvisible() ? neocomplete#close_popup() : "\<CR>"
+	return neocomplcache#smart_close_popup() . "\<CR>"
 endfunction
 " <TAB>: completion.
 inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 " <C-h>, <BS>: close popup and delete backword char.
-inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
-inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
-inoremap <expr><C-y>  neocomplete#close_popup()
-inoremap <expr><C-e>  neocomplete#cancel_popup()
-" Close popup by <Space>.
-"inoremap <expr><Space> pumvisible() ? neocomplete#close_popup() :
-"\<Space>"
+inoremap <expr><C-h> neocomplcache#smart_close_popup()."\<C-h>"
+inoremap <expr><BS> neocomplcache#smart_close_popup()."\<C-h>"
+inoremap <expr><C-y>  neocomplcache#close_popup()
+inoremap <expr><C-e>  neocomplcache#cancel_popup()
 
-" For cursor moving in insert mode(Not recommended)
-"inoremap <expr><Left>  neocomplete#close_popup() . "\<Left>"
-"inoremap <expr><Right> neocomplete#close_popup() . "\<Right>"
-"inoremap <expr><Up>    neocomplete#close_popup() . "\<Up>"
-"inoremap <expr><Down>  neocomplete#close_popup() . "\<Down>"
-" Or set this.
-"let g:neocomplete#enable_cursor_hold_i = 1
-" Or set this.
-"let g:neocomplete#enable_insert_char_pre = 1
+"XXX 
+let g:neocomplcache_include_paths = { 
+	\ 'c' : '.,/usr/include,/usr/local/include,/home/kawakami/src/sys/**'
+	\ }
 
-" AutoComplPop like behavior.
-"let g:neocomplete#enable_auto_select = 1
-
-" Shell like behavior(not recommended).
-"set completeopt+=longest
-"let g:neocomplete#enable_auto_select = 1
-"let g:neocomplete#disable_auto_complete = 1
-"inoremap <expr><TAB>  pumvisible() ? "\<Down>" : "\<C-x>\<C-u>"
-
-" Enable omni completion.
-autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
-autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-
-" Enable heavy omni completion.
-if !exists('g:neocomplete#sources#omni#input_patterns')
-		let g:neocomplete#sources#omni#input_patterns = {}
-endif
-"let g:neocomplete#sources#omni#input_patterns.php = '[^.  \t]->\h\w*\|\h\w*::'
-"let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
-"let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
-
-" For perlomni.vim setting.
-" https://github.com/c9s/perlomni.vim
-let g:neocomplete#sources#omni#input_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
-
-"""}}}
+"}}}
+""""neocomplete.vim{{{
+""Note: This option must set it in .vimrc(_vimrc).  NOT IN .gvimrc(_gvimrc)!
+""" Disable AutoComplPop.
+"let g:acp_enableAtStartup = 0
+"
+"" Use neocomplete.
+"let g:neocomplete#enable_at_startup = 1
+"
+"" Set minimum syntax keyword length.
+"let g:neocomplete#sources#syntax#min_keyword_length = 3
+"let g:neocomplete#lock_buffer_name_pattern = 'Â¥*kuÂ¥*'
+"" Define dictionary.
+"let g:neocomplete#sources#dictionary#dictionaries = {
+"     Â¥ 'default' : '',
+"     Â¥ 'vimshell' : $HOME.'/.vimshell_hist',
+"     Â¥ 'scheme' : $HOME.'/.gosh_completions'
+"	     Â¥ }
+"" Define keyword.
+"if !exists('g:neocomplete#keyword_patterns')
+"    let g:neocomplete#keyword_patterns = {}
+"endif
+"let g:neocomplete#keyword_patterns['default'] = 'Â¥hÂ¥w*'
+"
+"" Plugin key-mappings.
+"inoremap <expr><C-g>     neocomplete#undo_completion()
+"inoremap <expr><C-l>     neocomplete#complete_common_string()
+"
+"" Recommended key-mappings.
+"" <CR>: close popup and save indent.
+"inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+"function! s:my_cr_function()
+"		return neocomplete#close_popup() . "Â¥<CR>"
+"		" For no inserting <CR> key.
+"		"return pumvisible() ? neocomplete#close_popup() : "Â¥<CR>"
+"endfunction
+"" <TAB>: completion.
+"inoremap <expr><TAB>  pumvisible() ? "Â¥<C-n>" : "Â¥<TAB>"
+"" <C-h>, <BS>: close popup and delete backword char.
+"inoremap <expr><C-h> neocomplete#smart_close_popup()."Â¥<C-h>"
+"inoremap <expr><BS> neocomplete#smart_close_popup()."Â¥<C-h>"
+"inoremap <expr><C-y>  neocomplete#close_popup()
+"inoremap <expr><C-e>  neocomplete#cancel_popup()
+"" Close popup by <Space>.
+""inoremap <expr><Space> pumvisible() ? neocomplete#close_popup() :
+""Â¥<Space>"
+"
+"" For cursor moving in insert mode(Not recommended)
+""inoremap <expr><Left>  neocomplete#close_popup() . "Â¥<Left>"
+""inoremap <expr><Right> neocomplete#close_popup() . "Â¥<Right>"
+""inoremap <expr><Up>    neocomplete#close_popup() . "Â¥<Up>"
+""inoremap <expr><Down>  neocomplete#close_popup() . "Â¥<Down>"
+"" Or set this.
+""let g:neocomplete#enable_cursor_hold_i = 1
+"" Or set this.
+""let g:neocomplete#enable_insert_char_pre = 1
+"
+"" AutoComplPop like behavior.
+""let g:neocomplete#enable_auto_select = 1
+"
+"" Shell like behavior(not recommended).
+""set completeopt+=longest
+""let g:neocomplete#enable_auto_select = 1
+""let g:neocomplete#disable_auto_complete = 1
+""inoremap <expr><TAB>  pumvisible() ? "Â¥<Down>" : "Â¥<C-x>Â¥<C-u>"
+"
+"" Enable omni completion.
+"autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+"autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+"autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+"autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+"autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+"
+"" Enable heavy omni completion.
+"if !exists('g:neocomplete#sources#omni#input_patterns')
+"		let g:neocomplete#sources#omni#input_patterns = {}
+"endif
+""let g:neocomplete#sources#omni#input_patterns.php = '[^.  Â¥t]->Â¥hÂ¥w*Â¥|Â¥hÂ¥w*::'
+""let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *Â¥t]Â¥%(Â¥.Â¥|->Â¥)'
+""let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *Â¥t]Â¥%(Â¥.Â¥|->Â¥)Â¥|Â¥hÂ¥w*::'
+"
+"" For perlomni.vim setting.
+"" https://github.com/c9s/perlomni.vim
+"let g:neocomplete#sources#omni#input_patterns.perl = 'Â¥hÂ¥w*->Â¥hÂ¥w*Â¥|Â¥hÂ¥w*::'
+"
+""""}}}
 """eskk.vim{{{
-let g:eskk#directory = "~/.eskk"
-let g:eskk#dictionary = { 'path': "~/.skk-jisyo", 'sorted': 0, 'encoding': 'utf-8', }
-let g:eskk#large_dictionary = { 'path': "~/.eskk/SKK-JISYO.L", 'sorted': 1, 'encoding': 'euc-jp', }
+"let g:eskk#directory = "~/.eskk"
+"let g:eskk#dictionary = { 'path': "~/.skk-jisyo", 'sorted': 0, 'encoding': 'utf-8', }
+"let g:eskk#large_dictionary = { 'path': "~/.eskk/SKK-JISYO.L", 'sorted': 1, 'encoding': 'euc-jp', }
+""""}}}
+"""neosnippet{{{
+imap <C-k>	<Plug>(neosnippet_expand_or_jump)
+smap <C-k>	<Plug>(neosnippet_expand_or_jump)
+xmap <C-k>	<Plug>(neosnippet_expand_or_jump)
+
+" SuperTab like snippets behavior.
+" imap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+" Â¥ "Â¥<Plug>(neosnippet_expand_or_jump)"
+" Â¥: pumvisible() ? "Â¥<C-n>" : "Â¥<TAB>"
+" smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+" Â¥ "Â¥<Plug>(neosnippet_expand_or_jump)"
+" Â¥: "Â¥<TAB>"
+
+if has('conceal')
+		set conceallevel=2 concealcursor=i
+endif
+
+let g:neosnippet#enable_snipmate_compatibility=1
+
+let g:neosnippet#snippets_directory='~/.vim/bundle/neosnippet-snippets/neosnippets'
+
 """}}}
+"""stargate
+"let g:stargate#include_path = { "c": ["/home/kawakami/src/sys/**"] }
 """}}}
 augroup highlightZenkakuSpace
   autocmd!
   autocmd VimEnter,Colorscheme * highlight ZenkakuSpace 
                           \term=underline ctermbg=LightMagenta guibg=LightMagenta
-  autocmd VimEnter,WinEnter,BufRead * match ZenkakuSpace /@/
+  autocmd VimEnter,WinEnter,BufRead * match ZenkakuSpace /?@/
 augroup END
 highlight ColorColumn guibg=SlateBlue
-colorscheme morning
+set background=dark
+"let g:solarized_termcolors=256
+"let g:solarized_termtrans=1
+colorscheme molokai
