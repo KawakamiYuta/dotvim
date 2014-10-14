@@ -1,5 +1,6 @@
 scriptencoding utf-8
-"Last Change: 22-Sep-2014.
+" vim: set foldmethod=marker :
+"Last Change: 10-Oct-2014.
 "Maintainer:  kawakami yuta 
 "-------------------------------------------------------------------------------
 
@@ -7,6 +8,11 @@ if has('vim_starting')
         set nocompatible
 		set runtimepath+=~/.vim/bundle/neobundle.vim/
 endif
+
+set omnifunc=syntaxcomplete
+set tags=./tags
+set path+=/home/kawakami/ebara/src/sys/
+syntax on
 
 """neobundle.vim{{{
 call neobundle#rc(expand('~/.vim/bundle/'))
@@ -26,137 +32,161 @@ NeoBundle 'kana/vim-surround'
 NeoBundle 'LeafCage/foldCC'
 NeoBundle 'vim-scripts/autodate.vim'
 NeoBundle 'tyru/eskk.vim'
-"NeoBundle 'Shougo/vimfiler'
 NeoBundle 'Shougo/neosnippet'
 NeoBundle 'Shougo/neosnippet-snippets'
 NeoBundle 'Shougo/unite.vim'
-NeoBundle 'Shougo/neomru.vim'
-"NeoBundle 'tsukkee/unite-tag'
-"NeoBundle 'Shougo/unite-outline'
+NeoBundle 'tsukkee/unite-tag'
+NeoBundle 'Shougo/unite-outline'
 NeoBundle 'ujihisa/unite-colorscheme'
-NeoBundle 'thinca/vim-fontzoom'
+NeoBundle 'vimplugin/project.vim'
+NeoBundle 'glidenote/memolist.vim'
 NeoBundle 'tpope/vim-fugitive'
 NeoBundle 'Shougo/neocomplcache'
-NeoBundle 'osyo-manga/vim-stargate'
+NeoBundle 'chriskempson/vim-tomorrow-theme'
+NeoBundle 'Shougo/VimFiler'
+NeoBundle 'w0ng/vim-hybrid'
 NeoBundle 'altercation/vim-colors-solarized'
 NeoBundle 'tomasr/molokai'
-NeoBundle 'ctrlpvim/ctrlp.vim'
 NeoBundle 'mattn/webapi-vim'
+NeoBundle 'ctrlpvim/ctrlp.vim'
 NeoBundle 'mattn/excitetranslate-vim'
 NeoBundle 'ujihisa/neco-look'
 NeoBundle 'thinca/vim-ref'
+NeoBundle 'sjl/gundo.vim.git'
+"NeoBundle 'jceb/vim-orgmode'
+NeoBundle 'hsitz/VimOrganizer'
+NeoBundle 'osyo-manga/vim-stargate'
 "NeoBundle 'fuenor/im_control.vim '
 filetype plugin indent on
 NeoBundleCheck
 """}}}
 
+"""Encoding"{{{
 set encoding=utf-8
-set fileencodings=ucs-bom,iso-2022-jp-3,iso-2022-jp,
-                 \eucjp-ms,euc-jisx0213,euc-jp,sjis,cp932,utf-8
-set fileformats=unix,dos,mac """
-set backspace=indent,eol,start
-set cursorline
-"set cursorcolumn
-set number
-"set tabstop=8
-set tabstop=4
-"set expandtab """expand tab to space
+set fileencodings=utf-8,cs-bom,iso-2022-jp-3,iso-2022-jp,
+                 \eucjp-ms,euc-jisx0213,euc-jp,sjis,cp932
+set fileformats=unix,dos,mac
+"}}}
+
+"""Search"{{{
 set ignorecase
-set smartcase
-set smartindent
-set omnifunc=syntaxcomplete
 set hlsearch
-set helplang=en,ja
-set textwidth=80
-set formatoptions+=mM
-"set colorcolumn=+1
-set noswapfile
-set wildmenu
-"set t_Co=16
-set t_Co=256
-set nobackup
-"set list
-set listchars=tab:>-,trail:-,extends:>,precedes:<
+set smartcase
+"}}}
+
+"""Edit"{{{
+set backspace=indent,eol,start
+set modeline
+set showmatch
+set virtualedit=block
 set foldenable
 set foldmethod=marker
 set foldcolumn=3
+if exists('FoldCCtext')
+	set foldtext=FoldCCtext()
+endif
+set undodir=~/.vim/undodir
+set undofile
+set smarttab
+set tabstop=4
+"set expandtab
+set shiftround
+set matchpairs+=<:>
+set smartindent
+set textwidth=80
+set nobackup
 set clipboard=unnamed
+set shiftwidth=4
+set noswapfile
+"set hidden
+"}}}
+
+"""View"{{{
+set cursorline
+set number
+"set list
+set listchars=tab:>-,trail:-,extends:>,precedes:<
+"set colorcolumn=+1
+"set spell
+set laststatus=2
+set cmdheight=2
+set linebreak
+set wildmenu
+set t_Co=256
+set showbreak=\
+set breakat=\ \ ;:,!?
+"}}}
+
+"""Lang"{{{
+set helplang=en,ja
+set formatoptions+=mM
+"}}}
+
+"""Gui"{{{
 set guioptions-=m
 set guioptions-=T
-set shiftwidth=4
-"set tags=‾/ant/mvproc-test/tags
-set tags=./tags
-"set tags=‾/ant/execctl-test/src/tags
-"set tags=‾/ant/bulkipi-evaluate/tags
-"set tags=‾/ant/kawakami-ant/tags
-"set hidden
-syntax on
-"if exists('FoldCCtext')
-set foldtext=FoldCCtext() """change fold-function
-"endif
+"}}}
 
-nnoremap <Space>.
-        \       :<C-u>edit $MYVIMRC<CR>
-nnoremap <Space>s.
-        \       :<C-u>source $MYVIMRC<CR>
-"""<Leader>=',' XXX may be have problem
-""" XXX why can't?
-"nnoremap ¥ ,
-"nnoremap , ¥
+"""IME"{{{
+if has('win16')|| has('win32') || has('win64')
+	if has('multi byte ime') || has('xim') || has('gui_macvim')
+		"Insert mode :lmap off , IME ON
+		set iminsert=2
+		"Serch mode  :lmap off , IME ON
+		set imsearch=2
+		inoremap <silent> <ESC> <ESC>:set iminsert=0<CR>
+	endif
+endif
+"}}}
+
+"""Keymapping"{{{
+let mapleader=","
+nnoremap , ¥
+nnoremap <Space>.  :<C-u>edit $MYVIMRC<CR>
+nnoremap <Space>s. :<C-u>source $MYVIMRC<CR>
 nnoremap <Leader>c :<C-u>set cursorline!<CR>
-nnoremap <Leader>v :<C-u>set cursorcolumn!<CR>
+nnoremap <Leader>v :<C-u>vsplit<CR>
 nnoremap <Leader>4 :<C-u>set tabstop=4<CR>
 nnoremap <Leader>8 :<C-u>set tabstop=8<CR>
 nnoremap <Leader>e :<C-u>set expandtab!<CR>
 nnoremap <Leader>l :<C-u>set list!<CR>
 nnoremap <Leader>cce :<C-u>set colorcolumn=""<CR>
 nnoremap <Leader>ccd :<C-u>set colorcolumn=+1<CR>
-nnoremap <Leader>f :<C-u>Explore<CR>
+"nnoremap <Leader>f :<C-u>Explore<CR>
+nnoremap <Leader>f :<C-u>set foldmethod=indent<CR>
+nnoremap <Leader>ff:<C-u>set foldmethod=syntax<CR>
 nnoremap <Leader>s :<C-u>spell!<CR>
 nnoremap <Leader>h :<C-u>hidden!<CR>
 nnoremap <Leader>o :<C-u>Unite outline<CR>
-nnoremap <Leader>v :<C-u>vsplit<CR>
-nnoremap <Leader>f :<C-u>set foldmethod=indent<CR>
-nnoremap <Leader>m :<C-u>Unite file_mru<CR>
+"nnoremap <Leader>m :<C-u>make depend<CR>
+nnoremap <Leader>\ :<C-u>checkpath<CR>
+nnoremap <Leader>x :<C-u>set syntax=c<CR>
+imap OA <Up>
+imap OB <Down>
+imap OC <Right>
+imap OD <Left>
 map	 <C-]>	   :<C-u>GtagsCursor<CR>
 map	 <Leader>o :<C-u>Gtags -f %<CR>
 map	 <Leader>g :<C-u>Gtags<CR>
 map	 <Leader>r :<C-u>Gtags -r<CR>
-nmap	 <C-n> :<C-u>cn<CR>
-nmap	 <C-p> :<C-u>cp<CR>
+nmap <C-n> :<C-u>cn<CR>
+nmap <C-p> :<C-u>cp<CR>
 map  <C-c>	   :<C-u>qa!<CR>
 map  <Leader>w :<C-u>wq<CR>
 map  <Leader>q :<C-u>q!<CR>
-
-set path+=/home/kawakami/ant.git/sys/include
-set path+=/home/kawakami/ant.git/test/include
-
-"?????ワク????マク????筍シ?ノ。ラ、?vi??トエ?筍シ?ノ、?フオ????
-"let IM_vi_CooperativeMode = 0
-" ?????筍シ?ノス?ホサ????IME???ヨ、???ツク???ハ、?
-"inoremap <silent> <ESC> <ESC>:call IMCtrl('Off')<CR>
-"inoremap <silent> <C-[> <ESC>:call IMCtrl('Off')<CR>
-
-" <ESC>????????IM???リウ??マ、゛、ヌ、?ネソ?????ル、???????ttimeoutlen??テサ?????熙キ?ニ、゜、ニ、??タ、???(?゜・???)
-set timeout timeoutlen=3000 ttimeoutlen=100
-
-
-
-"""ime setting
-if has('multi byte ime') || has('xim') || has('gui_macvim')
-		"Insert mode :lmap off , IME ON
-		set iminsert=2
-		"Serch mode  :lmap off , IME ON
-		set imsearch=2
-		inoremap <silent> <ESC> <ESC>:set iminsert=0<CR>
-endif
+vmap <Leader>b v`<I<CR><esc>k0i#if 0<ESC>`>j0i#endif<CR><esc><ESC>
+nmap <Leader>m :<C-u>make -C ../../compile/i386-s<CR>
+"nmap <C-m>d :<C-u>make depend -C ../../compile/i386-s<CR>
+nmap <Leader>a :<C-u>Align =<CR>
+"}}}
 
 """plugins{{{
+"""vimfiler"{{{
+let g:vimfiler_as_default_explorer=1
+"}}}
 """neocomplcache.vim{{{
 "Disable AutoComplPop.
 let g:acp_enableAtStartup = 0
-"Enable heaby omni completion
-"let g:neocomplcache_force_omni_patterns = 't:] *\t]\%(\.\|->\)'
 " Use neocomplcache.
 let g:neocomplcache_enable_at_startup = 1
 " Use smartcase.
@@ -169,7 +199,6 @@ let g:neocomplcache_lock_buffer_name_pattern = '\*ku\*'
 let g:neocomplcache_dictionary_filetype_lists = {
 			\ 'default' : ''
 			\ }
-"let g:neocomplcache_include_paths="/home/kawakami/src/sys/**,"
 
 " Plugin key-mappings.
 inoremap <expr><C-g>     neocomplcache#undo_completion()
@@ -188,12 +217,6 @@ inoremap <expr><C-h> neocomplcache#smart_close_popup()."\<C-h>"
 inoremap <expr><BS> neocomplcache#smart_close_popup()."\<C-h>"
 inoremap <expr><C-y>  neocomplcache#close_popup()
 inoremap <expr><C-e>  neocomplcache#cancel_popup()
-
-"XXX 
-let g:neocomplcache_include_paths = { 
-	\ 'c' : '.,/usr/include,/usr/local/include,/home/kawakami/src/sys/**'
-	\ }
-
 "}}}
 """"neocomplete.vim{{{
 ""Note: This option must set it in .vimrc(_vimrc).  NOT IN .gvimrc(_gvimrc)!
@@ -307,17 +330,44 @@ let g:neosnippet#enable_snipmate_compatibility=1
 let g:neosnippet#snippets_directory='~/.vim/bundle/neosnippet-snippets/neosnippets'
 
 """}}}
-"""stargate
-"let g:stargate#include_path = { "c": ["/home/kawakami/src/sys/**"] }
+"""memolist"{{{
+map <Leader>mn :<C-u>MemoNew<CR>
+map <Leader>ml :<C-u>MemoList<CR>
+map <Leader>mg :<C-u>MemoGrep<CR>
+
+let g:memolist_path="/home/kawakami/memo"
+let g:memolist_prompt_tags=1
+"let g:memolist_prompt_categories=1
+let g:memolist_memo_suffix="markdown"
+let g:memolist_unite=1
+let g:memolist_unite_option="-winheight=20"
+let g:memolist_unite_source="file_rec"
+"let g:memolist_vimfiler=1
+"let g:memolist_vimfiler_option="-split -winwindth=20"
+
+"}}}
+"""autodate"{{{
+let g:autodate_keyword_pre = "updated:"
+let g:autodate_format = "%Y-%m-%d"
+let g:autodate_keyword_post = "."
+"}}}
+"""solarized"{{{
+"let g:solarized_contrast"low"
+let g:solarized_contrast="normal"
+let g:solarized_visibility="normal"
+"}}}
 """}}}
+
+set background=dark
+colorscheme molokai
+highlight ColorColumn ctermbg=2
+"highlight ColorColumn guibg=DarkRed ctermbg=Cyan
+
+"""Function"{{{
 augroup highlightZenkakuSpace
   autocmd!
   autocmd VimEnter,Colorscheme * highlight ZenkakuSpace 
                           \term=underline ctermbg=LightMagenta guibg=LightMagenta
   autocmd VimEnter,WinEnter,BufRead * match ZenkakuSpace /?@/
 augroup END
-highlight ColorColumn guibg=SlateBlue
-set background=dark
-"let g:solarized_termcolors=256
-"let g:solarized_termtrans=1
-colorscheme molokai
+"}}}
