@@ -10,7 +10,7 @@ if has('vim_starting')
 endif
 
 set omnifunc=syntaxcomplete
-set tags=./tags
+set tags=~/TODO/src/sys/tags
 set path+=/home/kawakami/ebara/src/sys/
 syntax on
 
@@ -53,6 +53,7 @@ NeoBundle 'mattn/excitetranslate-vim'
 NeoBundle 'ujihisa/neco-look'
 NeoBundle 'thinca/vim-ref'
 NeoBundle 'sjl/gundo.vim.git'
+NeoBundle 'mbbill/echofunc'
 "NeoBundle 'jceb/vim-orgmode'
 NeoBundle 'hsitz/VimOrganizer'
 NeoBundle 'osyo-manga/vim-stargate'
@@ -165,10 +166,10 @@ imap OA <Up>
 imap OB <Down>
 imap OC <Right>
 imap OD <Left>
-map	 <C-]>	   :<C-u>GtagsCursor<CR>
-map	 <Leader>o :<C-u>Gtags -f %<CR>
-map	 <Leader>g :<C-u>Gtags<CR>
-map	 <Leader>r :<C-u>Gtags -r<CR>
+"map	 <C-]>	   :<C-u>GtagsCursor<CR>
+"map	 <Leader>o :<C-u>Gtags -f %<CR>
+"map	 <Leader>g :<C-u>Gtags<CR>
+"map	 <Leader>r :<C-u>Gtags -r<CR>
 nmap <C-n> :<C-u>cn<CR>
 nmap <C-p> :<C-u>cp<CR>
 map  <C-c>	   :<C-u>qa!<CR>
@@ -192,7 +193,7 @@ let g:neocomplcache_enable_at_startup = 1
 " Use smartcase.
 let g:neocomplcache_enable_smart_case = 1
 " Set minimum syntax keyword length.
-let g:neocomplcache_min_syntax_length = 3
+let g:neocomplcache_min_syntax_length = 5
 let g:neocomplcache_lock_buffer_name_pattern = '\*ku\*'
 
 " Define dictionary.
@@ -356,18 +357,34 @@ let g:autodate_keyword_post = "."
 let g:solarized_contrast="normal"
 let g:solarized_visibility="normal"
 "}}}
+"""taglist
+let Tlist_Ctags_Cmd='/usr/local/bin/ctags'
 """}}}
 
+"""Function"{{{
+augroup highlight ZenkakuSpace
+  autocmd!
+  autocmd VimEnter,Colorscheme * highlight ZenkakuSpace 
+                          \term=underline ctermbg=LightMagenta guibg=LightMagenta
+  autocmd VimEnter,WinEnter,BufRead * match ZenkakuSpace /　/
+augroup END
+"}}}
+
+"""Filetype"{{{
+function! s:c()
+	:Tlist
+	setlocal list
+	setlocal hidden
+	setlocal colorcolumn=+1
+endfunction
+
+augroup vimrc-c
+	autocmd!
+	autocmd FileType c call s:c()
+augroup END
+"}}}
+"
 set background=dark
 colorscheme molokai
 highlight ColorColumn ctermbg=2
 "highlight ColorColumn guibg=DarkRed ctermbg=Cyan
-
-"""Function"{{{
-augroup highlightZenkakuSpace
-  autocmd!
-  autocmd VimEnter,Colorscheme * highlight ZenkakuSpace 
-                          \term=underline ctermbg=LightMagenta guibg=LightMagenta
-  autocmd VimEnter,WinEnter,BufRead * match ZenkakuSpace /?@/
-augroup END
-"}}}
