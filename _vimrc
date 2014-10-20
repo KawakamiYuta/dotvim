@@ -47,6 +47,7 @@ NeoBundle 'Shougo/VimFiler'
 NeoBundle 'w0ng/vim-hybrid'
 NeoBundle 'altercation/vim-colors-solarized'
 NeoBundle 'tomasr/molokai'
+NeoBundle 'vim-scripts/SrcExpl'
 NeoBundle 'mattn/webapi-vim'
 NeoBundle 'ctrlpvim/ctrlp.vim'
 NeoBundle 'mattn/excitetranslate-vim'
@@ -106,10 +107,11 @@ set noswapfile
 set cursorline
 set number
 "set list
-set listchars=tab:>-,trail:-,extends:>,precedes:<
+set listchars=tab:>>,trail:-,extends:>,precedes:<
 "set colorcolumn=+1
 "set spell
 set laststatus=2
+set statusline=2
 set cmdheight=2
 set linebreak
 set wildmenu
@@ -373,6 +375,7 @@ augroup END
 """Filetype"{{{
 function! s:c()
 	:Tlist
+"	:GundoToggle
 	setlocal list
 	setlocal hidden
 	setlocal colorcolumn=+1
@@ -380,10 +383,13 @@ endfunction
 
 augroup vimrc-c
 	autocmd!
-	autocmd FileType c call s:c()
+	autocmd FileType c,cpp call s:c()
 augroup END
 "}}}
-"
+
+"""Syntax"{{{
+let g:c_gnu=1
+"}}}
 set background=dark
 colorscheme molokai
 highlight ColorColumn ctermbg=2
