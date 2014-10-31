@@ -15,7 +15,7 @@ set path+=/home/kawakami/ebara/src/sys/
 syntax on
 
 """neobundle.vim{{{
-call neobundle#rc(expand('~/.vim/bundle/'))
+call neobundle#begin(expand('~/.vim/bundle/'))
 NeoBundleFetch 'Shougo/neobundle.vim'
 """vimproc{{{
 NeoBundle 'Shougo/vimproc', {
@@ -39,6 +39,7 @@ NeoBundle 'tsukkee/unite-tag'
 NeoBundle 'Shougo/unite-outline'
 NeoBundle 'ujihisa/unite-colorscheme'
 NeoBundle 'vimplugin/project.vim'
+NeoBundle 'tpope/vim-markdown'
 NeoBundle 'glidenote/memolist.vim'
 NeoBundle 'tpope/vim-fugitive'
 NeoBundle 'Shougo/neocomplcache'
@@ -59,6 +60,7 @@ NeoBundle 'mbbill/echofunc'
 NeoBundle 'hsitz/VimOrganizer'
 NeoBundle 'osyo-manga/vim-stargate'
 "NeoBundle 'fuenor/im_control.vim '
+call neobundle#end()
 filetype plugin indent on
 NeoBundleCheck
 """}}}
@@ -359,6 +361,9 @@ let g:autodate_keyword_post = "."
 let g:solarized_contrast="normal"
 let g:solarized_visibility="normal"
 "}}}
+"""organizer
+au! BufRead,BufWrite,BufWritePost,BufNewFile *.org
+au BufEnter *.org	call org#SetOrgFileType()
 """taglist
 let Tlist_Ctags_Cmd='/usr/local/bin/ctags'
 """}}}
@@ -370,9 +375,11 @@ augroup highlight ZenkakuSpace
                           \term=underline ctermbg=LightMagenta guibg=LightMagenta
   autocmd VimEnter,WinEnter,BufRead * match ZenkakuSpace /　/
 augroup END
+
 "}}}
 
 """Filetype"{{{
+"""C"{{{
 function! s:c()
 	:Tlist
 "	:GundoToggle
@@ -380,10 +387,65 @@ function! s:c()
 	setlocal hidden
 	setlocal colorcolumn=+1
 endfunction
-
 augroup vimrc-c
 	autocmd!
 	autocmd FileType c,cpp call s:c()
+augroup END
+"}}}
+
+"""Markdown
+function! s:md()
+	abbreviate tl - [ ]
+	setlocal foldmethod=expr foldexpr=MkdCheckboxFold(v:lnum) foldtext=MkdCheckboxFoldText()
+
+	nnoremap <buffer> <Leader><Leader> :call ToggleCheckbox()<CR>
+	vnoremap <buffer> <Leader><Leader> :call ToggleCheckbox()<CR>
+
+	syn match MkdCheckboxMark /-\s\[x\]\s.\+/ display containedin=ALL
+	hi MkdCheckboxMark ctermfg=green
+	syn match MkdCheckboxUMark /-\s\[\s\]\s.\+/ display containedin=ALL
+	hi MkdCheckboxUMark ctermfg=red
+endfunction
+
+function! MkdCheckboxFold(lnum)
+	let line = getline(a:lnum)
+	let next = getline(a:lnum + 1)
+	if MkdIsNoIndentCheckLine(line) && MkdHasIndentLine(nex)
+		return 1
+	elseif (MkdIsNoIndentCheckLine(nex) || next =~'^$' ) && !MkdHasIndentLine(next)
+		return '<1'
+	endif
+	return '='
+endfunction
+
+function! MkdIsNoIndentCheckLine(line)
+	return a:line =~ '^- \[[ x]\] '
+endfunction
+
+function! MkdHasIndentLine(line)
+	return a:line =~ '^[[:blank:''\+'
+endfunction
+
+function! MkdCheckboxFoldText()
+	return
+	getline(v:foldstart) . ' (' . (v:foldend - v:foldstart) . ' lines)'
+endfunction
+
+function! ToggleCheckbox()
+    let l:line = getline('.')
+    if l:line =~ '\-\s\[\s\]'
+        let l:result = substitute(l:line, '-\s\[\s\]', '- [x]', '') .  ' [' .  strftime("%Y/%m/%d (%a) %H:%M") .  ']'
+        call setline('.', l:result)
+    elseif l:line =~ '\-\s\[x\]'
+        let l:result = substitute(substitute(l:line, '-\s\[x\]', '- [ ]', ''), '\s\[\d\{4}.\+]$', '','')
+        call setline('.', l:result)
+    end
+endfunction
+
+
+augroup vimrc-md
+	autocmd!
+	autocmd FileType markdown call s:md()
 augroup END
 "}}}
 
